@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="styles.css">
+    <title>OCR APP</title>
+</head>
+<body>
+    <div class="container">
+        <div id="new-card">
+            <div id="save-text">
+                <div id="header">
+                    <h1>{{header}}</h1>
+                    <h2>{{subHeader}}</h2>
+                </div>
+
+                <div id="image">
+                    <img id="main-image-vs" :src="shownImage" alt="image to text">
+                    <input type="file" accept="image/jpeg" id="file-input" @change="changeImg">
+                </div>
+
+                <div id="submit-area">
+                    <button id="get-text" type="submit" @click="getText">Submit</button>
+                </div>
+
+                <h3>Your extracted text is below:</h3>
+                <label for="content">
+                    <textarea v-model="newContent" id="extracted-text"></textarea>
+                </label>
+
+                <h4>Do you want to save this to your notes?</h4>
+                
+                <label for="title">Title
+                    <input v-model="newTitle" type="text" id="title">
+                </label>
+
+                <button @click="createCard">Yes</button>
+                <button v-on:click="deleteText">No</button>
+
+                <ul class="card-list">
+                    <li v-for="(card,index) in cards">
+                        <p v-bind="card">{{ card.title }}</p>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    
+    <script type='text/javascript' src='config.js'></script>
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.5.13/dist/vue.js"></script>
+    <script src="main.js"></script>
+</body>
+
+</html>
