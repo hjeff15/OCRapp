@@ -3,45 +3,66 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://fonts.googleapis.com/css2?family=Grandstander:wght@300;400;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Special+Elite&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="styles.css">
     <title>OCR APP</title>
 </head>
 <body>
     <div class="container">
-        <div id="new-card">
+        <div id="new-note">
             <div id="save-text">
-                <div id="header">
+                <header id="header">
                     <h1>{{header}}</h1>
                     <h2>{{subHeader}}</h2>
-                </div>
+                </header>
 
                 <div id="image">
-                    <img id="main-image-vs" :src="shownImage" alt="image to text">
-                    <input type="file" accept="image/jpeg" id="file-input" @change="changeImg">
+                    <label for="file-input">
+                        <img id="main-image" :src="shownImage" alt="image to text">
+                    </label>
+                    <input type="file" accept="image/*;capture=camera" id="file-input" @change="changeImg">
                 </div>
 
                 <div id="submit-area">
-                    <button id="get-text" type="submit" @click="getText">Submit</button>
+                    <button id="get-text" v-show="showButton" type="submit" @click="getText">
+                        <p>GET TEXT</p> 
+                    </button>
                 </div>
 
-                <h3>Your extracted text is below:</h3>
-                <label for="content">
-                    <textarea v-model="newContent" id="extracted-text"></textarea>
-                </label>
+                <div id="extracted-text-area">
+                    <h3 v-show="showText">Your extracted text is below:</h3>
+                    <label for="content">
+                        <textarea v-show="showText" v-model="newContent" id="extracted-text"></textarea>
+                    </label>
+                </div>
 
-                <h4>Do you want to save this to your notes?</h4>
-                
-                <label for="title">Title
-                    <input v-model="newTitle" type="text" id="title">
-                </label>
+                <div id="save-notes-area">
+                    <h4 v-show="showSaveInfo">Do you want to save this to your notes?</h4>
+                    
+                    <label v-show="showTitleInput" for="title">Title
+                        <input v-show="showTitleInput" v-model="newTitle" type="text" id="title" placeholder="My title...">
+                        <button v-show="showTitleInput"  id="save-button" @click="createnote">Save</button>
+                    </label>
+                    
+                    <div id="yes-no-buttons">
+                        <button id="yes-button" v-show="showSaveInfo" @click="showTitle">Yes</button>
+                        <button id="no-button" v-show="showSaveInfo" @click="deleteText">No</button>
+                    </div>
 
-                <button @click="createCard">Yes</button>
-                <button v-on:click="deleteText">No</button>
+                </div>
 
-                <ul class="card-list">
-                    <li v-for="(card,index) in cards">
-                        <p v-bind="card">{{ card.title }}</p>
-                    </li>
+
+                <ul class="note-list">
+                        <li v-for="(note,index) in notes" class="note" @click="note.showDetail = !note.showDetail">
+                            <div class="curl"></div>
+                            <p v-if="note.title" v-bind:key="note.showDetail">{{ note.title.toUpperCase() }}
+                                <span v-on:click='notes.splice(index, 1)' class="delete-note">X</span>
+                            </p>
+                            <transition name="roll">    
+                                <p v-bind="note" v-show="note.showDetail">{{ note.content.toLowerCase() }}</p>
+                            </transition>
+                        </li>
                 </ul>
             </div>
         </div>
@@ -53,3 +74,4 @@
 </body>
 
 </html>
+<!-- background image from http://sophiebenoitstudio.blogspot.com/2014/11/wrinkled-paper-wallpaper.html -->

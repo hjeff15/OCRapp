@@ -1,85 +1,120 @@
-// Create page for saved notes. Cards?
-// Use CSS grid to organise divs
-// If saved text, add input boxes for Title/Catagory/Reference
+// Hide "Add title" input until thumbs up/down buttons used
+// If X span is clicked add CSS transition to the div
 
-const cards = [{
+const defaultImage = "assets/camera.png";
+const notes = [{
     title: 'My First Note', 
     content:'Text goes here',
+    showDetail: false
 }]
-//================ Define Elements
+//================ API KEY
 const myApiKey = config.key;
 
-// ============= Error event handler ============
 function handleError(err){
-    console.log(err);
-    console.log("Oh no! Something went wrong!");
-
+        console.log(err);
+        console.log("Oh no! Something went wrong!");
 }
 
 new Vue({
-    el: "#new-card",
+    el: "#new-note",
     data: {
-        cards: cards,
+        notes: notes,
         header: 'OCR App',
         subHeader: "Store all your notes by taking a picture",
         newTitle: '',
         newContent: '',
-        shownImage: "https://easypdf.com/images/OCR-tool.png",
-        error: false
+        shownImage: defaultImage,
+        showText: false,
+        showButton: false,
+        showSaveInfo: false,
+        showTitleInput: false
     },
     methods: {
-        newCard: function(){
-            console.log(extractedText.textContent);
-        },
+        // ===========DELETE TEXT IF NOT SAVED============
         deleteText: function(){
-            extractedText.textContent = '';
+            this.newContent = '';
+            this.newTitle = '';
+            this.shownImage = defaultImage;
+            this.showText = false;
+            this.showButton = false;
         },
-        createCard: function(){
-            if(!this.newContent){
+        // =============CREATE NEW NOTE============
+        createnote: function(){
+            if(!this.newContent || !this.newTitle){
                 this.error = true;
-                console.log("aint' working")
+                alert("You need a Title AND content in order to save your note😁!")
             }else{
-                this.cards.push({
+                this.notes.push({
                     title: this.newTitle,
-                    content: this.newContent
+                    content: this.newContent,
+                    showDetail: false
                 })
                 this.newContent = '';
                 this.newTitle = '';
-                this.shownImage = "https://easypdf.com/images/OCR-tool.png";
+                this.shownImage = defaultImage;
+                this.showText = false;  
+                this.showButton = false;
+                this.showSaveInfo = false;
+                this.showTitleInput = false;
             }
         },
+        // ============UPLOAD IMAGE TO VIEWER============
         changeImg: function(event){
-           const image = event.target.files[0];
-           const reader = new FileReader();
-           reader.readAsDataURL(image);
-           reader.onload = e => {
-               this.shownImage = e.target.result;
-            //    console.log(this.shownImage);
-           }
+            const image = event.target.files[0];
+            if(image.size > 99999){
+                alert("This image is too large. Please use an image that is smaller than 1MB");
+            }else{
+                const reader = new FileReader();
+                reader.readAsDataURL(image);
+                reader.onload = e => {
+                    this.shownImage = e.target.result;
+                    this.showButton = true;
+                //    console.log(this.shownImage);
+                }
+            }
         },
+        // ==========SEND IMAGE TO API===============
         getText: async function(){
-            let Url = "https://api.ocr.space/parse/image";
-            var myHeaders = new Headers();
-            myHeaders.append("apikey", "760098e37488957");
-            
-            var formdata = new FormData();
-            formdata.append("language", "eng");
-            formdata.append("isOverlayRequired", "false");
-            formdata.append("iscreatesearchablepdf", "false");
-            formdata.append("issearchablepdfhidetextlayer", "false");
-            formdata.append("base64Image", this.shownImage);
-            
-            var requestOptions = {
-                method: 'POST',
-                headers: myHeaders,
-                body: formdata,
-                redirect: 'follow'
-            };
-            
-            const response = await fetch(Url, requestOptions);
-            const data = await response.json();
-            console.log(data);
-            this.newContent = data.ParsedResults[0].ParsedText;
+            if(this.shownImage === defaultImage){
+                alert("Please select an image to read.")
+            }else{
+                this.showText = true;
+                this.newContent = "Your text is being loaded..."
+                let Url = "https://api.ocr.space/parse/image";
+                var myHeaders = new Headers();
+                myHeaders.append("apikey", "760098e37488957");
+                
+                var formdata = new FormData();
+                formdata.append("language", "eng");
+                formdata.append("isOverlayRequired", "false");
+                formdata.append("iscreatesearchablepdf", "false");
+                formdata.append("issearchablepdfhidetextlayer", "false");
+                formdata.append("base64Image", this.shownImage);
+                
+                var requestOptions = {
+                    method: 'POST',
+                    headers: myHeaders,
+                    body: formdata,
+                    redirect: 'follow'
+                };
+                
+                const response = await fetch(Url, requestOptions).catch(handleError);
+                const data = await response.json();
+    
+                this.newContent = data.ParsedResults[0].ParsedText;
+                this.showButton = false;
+                this.showSaveInfo = true;
+            }
+ 
+        },
+        // =============TOGGLE NOTE VIEW===============
+        toggleDetail: function(){
+            this.showDetail = !this.showDetail;
+        },
+        showTitle: function(){
+            this.showTitleInput = true;
+            this.showSaveInfo = false;
+            this.showText = false;
         }
     }
 })

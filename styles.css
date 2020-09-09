@@ -1,10 +1,259 @@
+body{
+    /* font-family: 'Grandstander', cursive; */
+    font-family: 'Special Elite', cursive;
+    box-sizing: border-box;
+}
+
+header{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    /* background-color: #fff; */
+    border-radius: 10px;
+}
+
 textarea{
     width: 625px;
     height: 80px;
+    font-family: 'Special Elite', cursive;
+}
+
+ul{
+    list-style-type: none;
+    padding-inline-end: 40px;
+}
+li{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    /* border-radius: 10px; */
+    -webkit-box-shadow: 9px 6px 36px -23px rgba(0,0,0,0.54);
+    -moz-box-shadow: 9px 6px 36px -23px rgba(0,0,0,0.54);
+    box-shadow: 9px 6px 36px -23px rgba(0,0,0,0.54);
+}
+/* ============= GET TEXT BUTTON============= */
+#get-text{
+    font-family: 'Special Elite', cursive;
+    font-weight: 400;
+    width: 180px;
+    height: 65px;
+    background-image: url(https://ctl.s6img.com/society6/img/m8EXZe2XWDHcOOfs-jxAydfITKY/w_700/prints/~artwork/s6-0064/a/26683042_13482431/~~/pencil-row--3d-render-of-very-long-pencils-prints.jpg?wait=0&attempt=0);
+    background-position: 28% 21%;
+    background-size: 155%;
+    /* opacity: 0.5; */
+    font-size: 22px;
+    border-radius: 10px;
+    border: 0px;
+    cursor: pointer;
+    transition: all .2s linear;
+
+    position: relative;
+    z-index: 1;
+    /* margin: auto; */
+}
+
+#get-text::before{
+    background-image: url(https://ctl.s6img.com/society6/img/m8EXZe2XWDHcOOfs-jxAydfITKY/w_700/prints/~artwork/s6-0064/a/26683042_13482431/~~/pencil-row--3d-render-of-very-long-pencils-prints.jpg?wait=0&attempt=0);
+    background-position: 28% 21%;
+    background-size: 155%;
+    content: "";
+    position: absolute;
+    top: 0; 
+    left: 0;
+    width: 100%; 
+    height: 100%;  
+    opacity: .5; 
+    z-index: -1;
+}
+
+#get-text:hover{
+    transition: all 0.3s ease;
+    transform: scale(1.05, 1.05);
+    background-position: 28% 31%;
+    font-weight: 600;
+}
+/* ======================================= */
+
+/* =============== YES AND NO BUTTONS =============== */
+#yes-button{
+    font-family: 'Special Elite', cursive;
+    font-weight: 400;
+    width: 180px;
+    height: 65px;
+    font-size: 22px;
+    border-radius: 10px;
+    border: 0px;
+    cursor: pointer;
+    background: white;
+    transition: all .2s linear;
+}
+#yes-button:hover{
+    color: transparent;
+    background-image: url("assets/thumbsUp.svg");
+    background-color: transparent;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+#no-button{
+    font-family: 'Special Elite', cursive;
+    font-weight: 400;
+    width: 180px;
+    height: 65px;
+    font-size: 22px;
+    border-radius: 10px;
+    border: 0px;
+    cursor: pointer;
+    background: white;
+    transition: all .2s linear;
+}
+#no-button:hover{
+    color: transparent;
+    background-image: url("assets/thumbsUp.svg");
+    background-color: transparent;
+    background-repeat: no-repeat;
+    background-position: center;
+    transform: rotate(180deg);
+}
+/* ============================================= */
+
+.container{
+    background-image: url(http://th00.deviantart.net/fs70/PRE/i/2011/006/d/b/wrinkled_paper_texture__by_christianluannstock-d36jws6.png);
+    background-repeat: round;
+    overflow: auto;
+    position: static;
+}
+.curl {
+	width:30px;
+    height:30px;
+    margin-right: auto;
+	top:0;
+	left:0;
+	background : 
+		linear-gradient(
+			135deg, 
+			rgba(255, 255, 255, 0), 
+			#fffbff00 45%, /* this is the background colour*/
+			rgba(221, 221, 221, 0) 50%, 
+			rgb(204, 204, 204) 12%, 
+			rgba(255, 255, 255, 0) 100%
+		);
+	box-shadow : 0 2 10px rgba(0, 0, 0, .5);
+	/* transition: all .5s ease; */
+}
+
+/*  ============ DELETE NOTE X ======== */
+.delete-note {
+    position: absolute;
+    right: 0;
+    top: 0;
+    padding: 10px 15px;
+    opacity: .4;
+    transition: all 0.2s ease;
+}
+
+.delete-note:hover{
+    color: red;
+    transform: scale(1.5) rotate(720deg);
+}
+
+.roll-enter-active, .roll-leave-active {
+    transition: opacity .8s;
+}
+
+.roll-enter, .roll-leave-to /* .fade-leave-active below version 2.1.8 */ {
+    opacity: 0;
+}
+
+#submit-area{
+    display: flex;
+    justify-content: center;
+}
+
+#image>input{
+    display: none;
+}
+
+#image{
+    display: flex;
+    justify-content: center;
 }
 
 #main-image{
-    width: 500px;
+    width: 300px;
+    height: 300px;
+    background: none;
+    cursor: pointer;
+    -webkit-box-shadow: 9px 6px 36px -23px rgba(0, 0, 0, 0.872);
+    -moz-box-shadow: 9px 6px 36px -23px rgba(0, 0, 0, 0.797);
+    box-shadow: 9px 6px 36px -23px rgba(0, 0, 0, 0.913);
+}
+
+#extracted-text-area,
+#save-notes-area{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+#extracted-text-area{
+    background: transparent;
+    border: none;
+}
+
+#yes-button{
+    margin-right: 20px;
+}
+
+#no-button{
+    margin-left: 20px;
+}
+
+li{
+    position: relative;
+    z-index: 1;
+    margin-bottom: 5px;
+    /* border: 2px solid gray; */
+}
+
+li::before{
+    border-radius: 10px;
+    cursor: pointer;
+    content: "";
+    position: absolute;
+    top: 0; 
+    left: 0;
+    width: 100%; 
+    height: 100%;  
+    opacity: .7; 
+    z-index: -1;
+    background-color: white;
+}
+
+li.note p {
+    /* opacity: 1; */
+    cursor: pointer;
+    margin-top: 0px;
+    margin-bottom: 25px;
+}
+
+li.note{
+    /* display: inline; */
+    margin-top: 0px;
+    margin-bottom: 20px;
+    transition: all .2s linear;
+}
+
+li.note:hover{
+    transform: scale(1.05);
 }
 
 
+
+/* =========== MEDIA QUERIES =========== */
+
+@media (min-width: 1185px){
+    .container{
+        margin-left: 10%;
+        margin-right: 10%;
+    }
+}
